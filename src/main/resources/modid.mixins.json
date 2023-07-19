@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "com.jagerbob.lapser.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"LapserMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

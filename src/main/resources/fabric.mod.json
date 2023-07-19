@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "lapser",
+	"version": "${version}",
+	"name": "Lapser Bootleg",
+	"description": "This is the premise of a fucking great thing",
+	"authors": [
+		"Jagerbob"
+	],
+	"contact": {
+		"homepage": "https://chatonmort.com/",
+		"sources": "https://github.com/jagerbob"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/modid/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.jagerbob.lapser.LapserMod"
+		],
+		"client": [
+			"com.jagerbob.lapser.LapserModClient"
+		]
+	},
+	"mixins": [
+		"modid.mixins.json",
+		{
+			"config": "modid.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.14.21",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
