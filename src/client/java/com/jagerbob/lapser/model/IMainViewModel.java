@@ -1,2 +1,13 @@
-package com.jagerbob.lapser.model;public interface IMainViewModel {
+package com.jagerbob.lapser.model;
+
+import net.minecraft.util.math.BlockPos;
+
+public interface IMainViewModel {
+    BlockPos getCoordinatesA();
+
+    void setCoordinatesA(BlockPos coordinatesA);
+
+    BlockPos getCoordinatesB();
+
+    void setCoordinatesB(BlockPos coordinatesB);
 }

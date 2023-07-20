@@ -1,27 +1,35 @@
 package com.jagerbob.lapser.helpers;
 
-import com.jagerbob.lapser.actions.editor.ToggleEditorAction;
-import com.jagerbob.lapser.commands.CommandDispatcher;
+import com.jagerbob.lapser.controller.IController;
 import com.jagerbob.lapser.model.KeyBind;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
 
-public class KeyBindHelper {
+public class KeyBindManager {
 
-    private CommandDispatcher commandDispatcher;
+    private IController controller;
     private final KeyBind[] keyBinds = new KeyBind[] {
-            new KeyBind("com.jagerbob.lapser.toggleZoneEditor", GLFW.GLFW_KEY_R, "general.lapser", new ToggleEditorAction())
+            new KeyBind("com.jagerbob.lapser.toggleZoneEditor", GLFW.GLFW_KEY_R, "general.lapser", (MinecraftClient client) -> controller.toggleEditor(client)),
+            new KeyBind("com.jagerbob.lapser.play", GLFW.GLFW_KEY_Y, "general.lapser", (client) -> controller.play(client))
     };
 
-    public KeyBindHelper(CommandDispatcher commandDispatcher)
+    public KeyBindManager(IController controller)
     {
-        this.commandDispatcher = commandDispatcher;
+        this.controller = controller;
     }
     
     public void RegisterBindings() {
         for (KeyBind keyBind: keyBinds)
             KeyBindingHelper.registerKeyBinding(keyBind);
+
+        ClientTickEvents.END_CLIENT_TICK.register((client -> {
+            for (KeyBind keyBind: keyBinds)
+                while(keyBind.wasPressed()) {
+                    keyBind.OnClick(client);
+                }
+        }));
     }
 
 

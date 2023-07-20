@@ -1,5 +1,5 @@
-package com.jagerbob.lapser.commands;
+package com.jagerbob.lapser.model;
 
-public enum Commands {
+public enum Command {
     TOGGLE_AREA_EDITOR
 }

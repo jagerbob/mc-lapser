@@ -1,6 +1,6 @@
 package com.jagerbob.lapser;
 
-import com.jagerbob.lapser.constants.Config;
+import com.jagerbob.lapser.config.Config;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.jagerbob.lapser.gui;
+package com.jagerbob.lapser.view;
 
 import io.github.cottonmc.cotton.gui.GuiDescription;
 import io.github.cottonmc.cotton.gui.client.CottonClientScreen;

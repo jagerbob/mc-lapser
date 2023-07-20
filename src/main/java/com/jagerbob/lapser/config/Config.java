@@ -1,4 +1,4 @@
-package com.jagerbob.lapser.constants;
+package com.jagerbob.lapser.config;
 
 public class Config {
 

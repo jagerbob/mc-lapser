@@ -1,2 +1,4 @@
-package com.jagerbob.lapser.commands;public class ZoneEditorCommandHandler {
+package com.jagerbob.lapser.commands;
+
+public class ZoneEditorCommandHandler {
 }
