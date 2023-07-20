@@ -5,9 +5,9 @@ import net.minecraft.client.option.KeyBinding;
 
 public class KeyBind extends KeyBinding {
 
-    private final IAction action;
+    private final IClientAction action;
 
-    public KeyBind(String translationKey, int code, String category, IAction action) {
+    public KeyBind(String translationKey, int code, String category, IClientAction action) {
         super(translationKey, code, category);
         this.action = action;
     }

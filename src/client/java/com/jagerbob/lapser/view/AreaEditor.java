@@ -1,9 +1,8 @@
 package com.jagerbob.lapser.view;
 
-import com.jagerbob.lapser.controller.IController;
+import com.jagerbob.lapser.controller.IClientController;
 import com.jagerbob.lapser.helpers.StringHelper;
 import com.jagerbob.lapser.model.IMainViewModel;
-import com.jagerbob.lapser.model.MainViewModel;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WButton;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
@@ -15,7 +14,7 @@ import net.minecraft.text.Text;
 public class AreaEditor extends LightweightGuiDescription implements ILapserView {
 
     private final StringHelper stringHelper;
-    private final IController controller;
+    private final IClientController controller;
     private final WGridPanel root;
     private final WButton setCornerABtn;
     private final WButton setCornerBBtn;
@@ -24,7 +23,7 @@ public class AreaEditor extends LightweightGuiDescription implements ILapserView
     private final WLabel coordinatesA;
     private final WLabel coordinatesB;
 
-    public AreaEditor(IController controller){
+    public AreaEditor(IClientController controller){
         this.stringHelper = new StringHelper();
         this.controller = controller;
         this.root = new WGridPanel();
@@ -52,7 +51,7 @@ public class AreaEditor extends LightweightGuiDescription implements ILapserView
     }
 
     private void onSaveClick() {
-
+        controller.saveArea();
     }
 
     private void buildView() {

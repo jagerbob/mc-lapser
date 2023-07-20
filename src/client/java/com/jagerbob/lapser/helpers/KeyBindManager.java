@@ -1,6 +1,6 @@
 package com.jagerbob.lapser.helpers;
 
-import com.jagerbob.lapser.controller.IController;
+import com.jagerbob.lapser.controller.IClientController;
 import com.jagerbob.lapser.model.KeyBind;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -9,13 +9,13 @@ import org.lwjgl.glfw.GLFW;
 
 public class KeyBindManager {
 
-    private IController controller;
+    private IClientController controller;
     private final KeyBind[] keyBinds = new KeyBind[] {
             new KeyBind("com.jagerbob.lapser.toggleZoneEditor", GLFW.GLFW_KEY_R, "general.lapser", (MinecraftClient client) -> controller.toggleEditor(client)),
             new KeyBind("com.jagerbob.lapser.play", GLFW.GLFW_KEY_Y, "general.lapser", (client) -> controller.play(client))
     };
 
-    public KeyBindManager(IController controller)
+    public KeyBindManager(IClientController controller)
     {
         this.controller = controller;
     }
