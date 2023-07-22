@@ -13,6 +13,6 @@ public class ClientPacketManager {
     }
 
     public void RegisterPackets() {
-        ClientPlayNetworking.registerGlobalReceiver(Packets.SAVE_AREA_PACKET, controller::retrieveArea);
+        ClientPlayNetworking.registerGlobalReceiver(Packets.RETRIEVE_AREA_PACKET, controller::retrieveArea);
     }
 }

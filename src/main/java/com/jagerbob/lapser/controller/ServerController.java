@@ -1,6 +1,7 @@
 package com.jagerbob.lapser.controller;
 
 import com.jagerbob.lapser.config.Packets;
+import com.jagerbob.lapser.helpers.BlockStateMapper;
 import com.mojang.authlib.properties.PropertyMap;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
@@ -49,45 +50,13 @@ public class ServerController implements IServerController {
         server.execute(() -> {
             BlockState blockState = player.getServerWorld().getBlockState(posA);
             PacketByteBuf responseBuf = PacketByteBufs.create();
-            //responseBuf.wri
-            String blockStateAsString = from(blockState);
+            String blockStateAsString = BlockStateMapper.toString(blockState);
+            responseBuf.writeString(blockStateAsString);
             ServerPlayNetworking.send(player, Packets.RETRIEVE_AREA_PACKET, responseBuf);
 
             //BlockPos newPos = posA.add(1, 1, 1);
             //BlockState newBlockState = new BlockState(Registries.BLOCK.get(new Identifier("minecraft:spruce_stairs"), )));
             //layer.getServerWorld().setBlockState(newPos, blockState);
         });
-    }
-
-    private String from(BlockState state) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(Objects.requireNonNull(Registries.BLOCK.getId(state.getBlock())));
-        boolean flag = true;
-        Iterator<Property<?>> iterator = state.getProperties().iterator();
-        while (iterator.hasNext()) {
-            if (flag) {
-                builder.append("[");
-                flag = false;
-            }
-
-            Property<?> property = iterator.next();
-            builder.append(property.getName());
-            builder.append("=");
-
-            if (state.get(property) instanceof Enum<?>) {
-                // Enum might have override toString
-                builder.append(((StringIdentifiable) state.get(property)).asString());
-            } else {
-                builder.append(state.get(property).toString());
-            }
-
-            if (iterator.hasNext()) {
-                builder.append(",");
-            }
-        }
-        if (!flag) {
-            builder.append("]");
-        }
-        return builder.toString();
     }
 }

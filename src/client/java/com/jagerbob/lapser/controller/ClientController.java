@@ -8,16 +8,12 @@ import com.jagerbob.lapser.view.LapserScreen;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.Objects;
 
 public class ClientController implements IClientController {
@@ -67,23 +63,8 @@ public class ClientController implements IClientController {
 
     @Override
     public void retrieveArea(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
-        try {
-            BlockState state = deserializeObject(buf.readByteArray());
-            this.player.sendMessage(Text.literal(state.getBlock().getTranslationKey()), false);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    private BlockState deserializeObject(byte[] data) throws IOException, ClassNotFoundException {
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
-        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-        BlockState yourObject = (BlockState) objectInputStream.readObject();
-        objectInputStream.close();
-        return yourObject;
+        String blockDetails = buf.readString();
+        this.player.sendMessage(Text.literal(blockDetails), false);
     }
 
     private void update() {
