@@ -1,5 +1,6 @@
 package com.jagerbob.lapser.helpers;
 
+import com.jagerbob.lapser.config.Packets;
 import com.jagerbob.lapser.controller.IServerController;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
@@ -16,5 +17,6 @@ public class ServerPacketManager {
 
     public void RegisterPackets() {
         ServerPlayNetworking.registerGlobalReceiver(SAVE_AREA_PACKET, controller::saveArea);
+        ServerPlayNetworking.registerGlobalReceiver(Packets.PLACE, controller::place);
     }
 }

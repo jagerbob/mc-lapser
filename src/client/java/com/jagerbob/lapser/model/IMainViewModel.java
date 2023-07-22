@@ -10,4 +10,12 @@ public interface IMainViewModel {
     BlockPos getCoordinatesB();
 
     void setCoordinatesB(BlockPos coordinatesB);
+
+    BlockPos getOrigin();
+
+    void setOrigin(BlockPos origin);
+
+    void setTempFile(String fileAsJson);
+
+    String getTempFile();
 }
