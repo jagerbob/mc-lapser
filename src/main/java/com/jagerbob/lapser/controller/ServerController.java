@@ -11,11 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.tick.SimpleTickScheduler;
 import org.slf4j.Logger;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ServerController implements IServerController {
 
@@ -30,15 +26,12 @@ public class ServerController implements IServerController {
         logger.debug(String.format("Received SAVE_AREA packet by %s", player.getIp()));
         BlockPos coordinatesA = buf.readBlockPos();
         BlockPos coordinatesB = buf.readBlockPos();
-        BlockPos origin = buf.readBlockPos();
 
         server.execute(() -> {
             PacketByteBuf responseBuf = PacketByteBufs.create();
-            responseBuf.writeBlockPos(coordinatesA);
-            responseBuf.writeBlockPos(coordinatesB);
-            responseBuf.writeBlockPos(origin);
-            for(BlockPos pos: BlockPos.iterate(coordinatesA, coordinatesB))
+            for(BlockPos pos: BlockPos.iterate(coordinatesA, coordinatesB)) {
                 responseBuf.writeString(BlockStateMapper.toString(player.getServerWorld().getBlockState(pos)));
+            }
             ServerPlayNetworking.send(player, Packets.RETRIEVE_AREA_PACKET, responseBuf);
         });
     }

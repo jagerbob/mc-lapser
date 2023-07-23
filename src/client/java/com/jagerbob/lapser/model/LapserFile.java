@@ -8,9 +8,23 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LapserFile {
+
+    private final BlockPos relativeCoordinatesA;
+    private final BlockPos relativeCoordinatesB;
+    private final Map<BlockPos, String> scan;
+
+    public LapserFile(BlockPos relativeCoordinatesA, BlockPos relativeCoordinatesB, Map<BlockPos, String> scan)
+    {
+        this.relativeCoordinatesA = relativeCoordinatesA;
+        this.relativeCoordinatesB = relativeCoordinatesB;
+        this.scan = scan;
+    }
+
     public BlockPos getRelativeCoordinatesA() {
         return relativeCoordinatesA;
     }
@@ -19,32 +33,12 @@ public class LapserFile {
         return relativeCoordinatesB;
     }
 
-    public List<String> getScan() {
+    public Map<BlockPos, String> getScan() {
         return scan;
-    }
-
-    private final BlockPos relativeCoordinatesA;
-    private final BlockPos relativeCoordinatesB;
-    private final List<String> scan;
-
-    public LapserFile(BlockPos relativeCoordinatesA, BlockPos relativeCoordinatesB, List<String> scan)
-    {
-        this.relativeCoordinatesA = relativeCoordinatesA;
-        this.relativeCoordinatesB = relativeCoordinatesB;
-        this.scan = scan;
     }
 
     public static LapserFile fromJson(String tempFile) {
         return new Gson().fromJson(tempFile, LapserFile.class);
-    }
-
-    public PacketByteBuf toBuffer(BlockPos origin)
-    {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeBlockPos(origin.add(relativeCoordinatesA));
-        buf.writeBlockPos(origin.add(relativeCoordinatesB));
-        scan.forEach(buf::writeString);
-        return buf;
     }
 
     public static LapserFile fromBuffer(PacketByteBuf buf)
@@ -55,9 +49,9 @@ public class LapserFile {
         BlockPos relativeCoordinatesA = BlockPosMapper.toRelativeCoordinates(origin, coordinatesA);
         BlockPos relativeCoordinatesB = BlockPosMapper.toRelativeCoordinates(origin, coordinatesB);
 
-        List<String> scan = new ArrayList<>();
+        Map<BlockPos, String> scan = new HashMap<>();
         for(BlockPos ignored : BlockPos.iterate(coordinatesA, coordinatesB))
-            scan.add(buf.readString());
+            scan.put(buf.readBlockPos(), buf.readString());
 
         return new LapserFile(relativeCoordinatesA, relativeCoordinatesB, scan);
     }

@@ -2,6 +2,8 @@ package com.jagerbob.lapser.model;
 
 import net.minecraft.util.math.BlockPos;
 
+import java.util.Map;
+
 public interface IMainViewModel {
     BlockPos getCoordinatesA();
 
@@ -15,7 +17,10 @@ public interface IMainViewModel {
 
     void setOrigin(BlockPos origin);
 
-    void setTempFile(String fileAsJson);
+    void setScan(String[][][] scan);
 
-    String getTempFile();
+    String[][][] getScan();
+
+    BlockPos getRelativeCoordinatesA();
+    BlockPos getRelativeCoordinatesB();
 }

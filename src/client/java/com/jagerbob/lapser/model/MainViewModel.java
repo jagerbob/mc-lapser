@@ -1,13 +1,16 @@
 package com.jagerbob.lapser.model;
 
+import com.jagerbob.lapser.helpers.BlockPosMapper;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.Map;
 
 public class MainViewModel implements IMainViewModel {
 
     private BlockPos coordinatesA = new BlockPos(BlockPos.ORIGIN);
     private BlockPos coordinatesB = new BlockPos(BlockPos.ORIGIN);
     private BlockPos origin = new BlockPos(BlockPos.ORIGIN);
-    private String tempFile;
+    private String[][][] scan;
     public BlockPos getCoordinatesA() {
         return coordinatesA;
     }
@@ -35,12 +38,22 @@ public class MainViewModel implements IMainViewModel {
     }
 
     @Override
-    public void setTempFile(String fileAsJson) {
-        this.tempFile = fileAsJson;
+    public void setScan(String[][][] scan) {
+        this.scan = scan;
     }
 
     @Override
-    public String getTempFile() {
-        return tempFile;
+    public String[][][] getScan() {
+        return scan;
+    }
+
+    @Override
+    public BlockPos getRelativeCoordinatesA() {
+        return BlockPosMapper.toRelativeCoordinates(this.origin, this.coordinatesA);
+    }
+
+    @Override
+    public BlockPos getRelativeCoordinatesB() {
+        return BlockPosMapper.toRelativeCoordinates(this.origin, this.coordinatesB);
     }
 }
