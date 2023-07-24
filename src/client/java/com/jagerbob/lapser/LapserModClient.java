@@ -4,6 +4,7 @@ import com.jagerbob.lapser.controller.ClientController;
 import com.jagerbob.lapser.controller.IClientController;
 import com.jagerbob.lapser.helpers.ClientPacketManager;
 import com.jagerbob.lapser.helpers.CommandManager;
+import com.jagerbob.lapser.helpers.EventManager;
 import com.jagerbob.lapser.helpers.KeyBindManager;
 import net.fabricmc.api.ClientModInitializer;
 
@@ -12,6 +13,7 @@ public class LapserModClient implements ClientModInitializer {
 	private final KeyBindManager keyBindManager;
 	private final ClientPacketManager packetManager;
 	private final CommandManager commandManager;
+	private final EventManager eventManager;
 
 	public LapserModClient()
 	{
@@ -19,6 +21,7 @@ public class LapserModClient implements ClientModInitializer {
 		this.keyBindManager = new KeyBindManager(this.controller);
 		this.packetManager = new ClientPacketManager(this.controller);
 		this.commandManager = new CommandManager(this.controller);
+		this.eventManager = new EventManager(this.controller);
 	}
 
 	@Override
@@ -26,5 +29,6 @@ public class LapserModClient implements ClientModInitializer {
 		keyBindManager.RegisterBindings();
 		packetManager.RegisterPackets();
 		commandManager.RegisterCommands();
+		eventManager.RegisterEventHandlers();
 	}
 }

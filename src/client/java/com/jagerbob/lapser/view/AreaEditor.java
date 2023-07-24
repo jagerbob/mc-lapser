@@ -9,6 +9,7 @@ import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WLabel;
 import io.github.cottonmc.cotton.gui.widget.data.HorizontalAlignment;
 import io.github.cottonmc.cotton.gui.widget.data.VerticalAlignment;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Text;
 
 public class AreaEditor extends LightweightGuiDescription implements ILapserView {
@@ -22,6 +23,7 @@ public class AreaEditor extends LightweightGuiDescription implements ILapserView
     private final WLabel editorTitle;
     private final WLabel coordinatesA;
     private final WLabel coordinatesB;
+    private ClientPlayerEntity player;
 
     public AreaEditor(IClientController controller){
         this.stringHelper = new StringHelper();
@@ -43,15 +45,15 @@ public class AreaEditor extends LightweightGuiDescription implements ILapserView
     }
 
     private void onCoordinateAClick() {
-        controller.setCoordinatesA();
+        controller.setCoordinatesA(player.getBlockPos());
     }
 
     private void onCoordinateBClick() {
-        controller.setCoordinatesB();
+        controller.setCoordinatesB(player.getBlockPos());
     }
 
     private void onSaveClick() {
-        controller.saveArea();
+        controller.saveArea(player.getBlockPos());
     }
 
     private void buildView() {
@@ -77,5 +79,9 @@ public class AreaEditor extends LightweightGuiDescription implements ILapserView
         root.add(coordinatesB, 5, 3, 4, 1);
         root.add(saveAreaBtn, 1, 4, 8, 1);
         root.validate(this);
+    }
+
+    public void setPlayer(ClientPlayerEntity player) {
+        this.player = player;
     }
 }

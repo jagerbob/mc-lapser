@@ -24,8 +24,6 @@ public class ClientController implements IClientController {
 
     private final IMainViewModel viewModel;
     private final AreaEditor areaEditor;
-    private MinecraftClient client;
-    private ClientPlayerEntity player;
 
     public ClientController() {
         this.viewModel = new MainViewModel();
@@ -34,33 +32,32 @@ public class ClientController implements IClientController {
 
     @Override
     public void toggleEditor(MinecraftClient client) {
-        this.client = client;
-        this.player = Objects.requireNonNull(client.player);
-        this.player.sendMessage(Text.literal("Toggle Editor Triggered"), false);
-        this.client.setScreen(new LapserScreen(areaEditor));
+        client.setScreen(new LapserScreen(areaEditor));
+        this.areaEditor.setPlayer(Objects.requireNonNull(client.player));
     }
 
     @Override
-    public void play(BlockPos origin, String algorithmAsString) {
+    public void play(BlockPos origin, String algorithmAsString, int speed) {
         TimeLapseAlgorithm algorithm = TimeLapseAlgorithmFactory.create(algorithmAsString);
+        algorithm.configure(true, 101 - speed);
         algorithm.play(origin, viewModel.getOrigin(), viewModel.getCoordinatesA(), viewModel.getScan());
     }
 
     @Override
-    public void setCoordinatesA() {
-        viewModel.setCoordinatesA(this.player.getBlockPos());
+    public void setCoordinatesA(BlockPos pos) {
+        viewModel.setCoordinatesA(pos);
         update();
     }
 
     @Override
-    public void setCoordinatesB() {
-        viewModel.setCoordinatesB(this.player.getBlockPos());
+    public void setCoordinatesB(BlockPos pos) {
+        viewModel.setCoordinatesB(pos);
         update();
     }
 
     @Override
-    public void saveArea() {
-        viewModel.setOrigin(this.player.getBlockPos());
+    public void saveArea(BlockPos origin) {
+        viewModel.setOrigin(origin);
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeBlockPos(viewModel.getCoordinatesB());
         buf.writeBlockPos(viewModel.getCoordinatesA());

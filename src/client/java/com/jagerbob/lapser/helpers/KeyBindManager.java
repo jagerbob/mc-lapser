@@ -14,7 +14,7 @@ public class KeyBindManager {
     private IClientController controller;
     private final KeyBind[] keyBinds = new KeyBind[] {
             new KeyBind("com.jagerbob.lapser.toggleZoneEditor", GLFW.GLFW_KEY_R, "general.lapser", (MinecraftClient client) -> controller.toggleEditor(client)),
-            new KeyBind("com.jagerbob.lapser.play", GLFW.GLFW_KEY_Y, "general.lapser", (client) -> controller.play(Objects.requireNonNull(client.player).getBlockPos(), "square_layer"))
+            new KeyBind("com.jagerbob.lapser.play", GLFW.GLFW_KEY_Y, "general.lapser", (client) -> controller.play(Objects.requireNonNull(client.player).getBlockPos(), "square_layer", 90))
     };
 
     public KeyBindManager(IClientController controller)

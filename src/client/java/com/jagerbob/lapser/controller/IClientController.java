@@ -12,10 +12,10 @@ import net.minecraft.util.math.Vec3i;
 
 public interface IClientController {
     void toggleEditor(MinecraftClient client);
-    void play(BlockPos origin, String algorithm);
-    void setCoordinatesA();
-    void setCoordinatesB();
-    void saveArea();
+    void play(BlockPos origin, String algorithm, int speed);
+    void setCoordinatesA(BlockPos pos);
+    void setCoordinatesB(BlockPos pos);
+    void saveArea(BlockPos origin);
 
     void retrieveArea(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender);
 }
