@@ -15,12 +15,13 @@ public class FullLayerAlgorithm extends TimeLapseAlgorithm {
         for(int y = 0; y < scan[0].length; y++)
             for(int z = 0; z < scan[0][0].length; z++)
                 for(int x = 0; x < scan.length; x++) {
+                    if(this.excludeAir && Objects.equals(scan[x][y][z], "minecraft:air"))
+                        continue;
                     PacketByteBuf buf = PacketByteBufs.create();
                     buf.writeBlockPos(origin.add(relativeCoordFromScanOrigin.add(new BlockPos(x, y, z))));
                     buf.writeString(scan[x][y][z]);
                     ClientPlayNetworking.send(Packets.PLACE, buf);
-                    if(!Objects.equals(scan[x][y][z], "minecraft:air"))
-                        Thread.sleep(5);
+                    Thread.sleep(this.placeDelayMs);
                 }
     }
 }

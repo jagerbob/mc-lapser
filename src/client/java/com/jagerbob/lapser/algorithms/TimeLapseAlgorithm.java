@@ -7,6 +7,15 @@ import java.util.Map;
 
 public abstract class TimeLapseAlgorithm {
 
+    protected boolean excludeAir = true;
+    protected int placeDelayMs = 5;
+
+    public void configure(boolean excludeAir, int placeDelayMs)
+    {
+        this.excludeAir = excludeAir;
+        this.placeDelayMs = placeDelayMs;
+    }
+
     public void play(BlockPos playerPos, BlockPos origin, BlockPos scanOrigin, String[][][] scan) {
         new Thread(() -> {
             try {

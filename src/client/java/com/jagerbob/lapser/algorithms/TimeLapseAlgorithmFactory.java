@@ -10,6 +10,8 @@ public class TimeLapseAlgorithmFactory {
                 return new ZVerticalAlgorithm();
             case "FULL_LAYER":
                 return new FullLayerAlgorithm();
+            case "SQUARE_LAYER":
+                return new SquareLayeredAlgorithm();
             default:
                 return new XVerticalAlgorithm();
         }
