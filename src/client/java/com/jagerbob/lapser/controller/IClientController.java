@@ -7,10 +7,12 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 
 public interface IClientController {
     void toggleEditor(MinecraftClient client);
-    void play(MinecraftClient client);
+    void play(BlockPos origin, String algorithm);
     void setCoordinatesA();
     void setCoordinatesB();
     void saveArea();

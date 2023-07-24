@@ -41,9 +41,9 @@ public class ClientController implements IClientController {
     }
 
     @Override
-    public void play(MinecraftClient client) {
-        TimeLapseAlgorithm algorithm = TimeLapseAlgorithmFactory.create("SQUARE_LAYER");
-        algorithm.play(player.getBlockPos(), viewModel.getOrigin(), viewModel.getCoordinatesA(), viewModel.getScan());
+    public void play(BlockPos origin, String algorithmAsString) {
+        TimeLapseAlgorithm algorithm = TimeLapseAlgorithmFactory.create(algorithmAsString);
+        algorithm.play(origin, viewModel.getOrigin(), viewModel.getCoordinatesA(), viewModel.getScan());
     }
 
     @Override

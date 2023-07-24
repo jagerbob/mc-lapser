@@ -4,13 +4,13 @@ public class TimeLapseAlgorithmFactory {
 
     public static TimeLapseAlgorithm create(String algName) {
         switch (algName) {
-            case "X_VERTICAL":
+            case "x_vertical":
                 return new XVerticalAlgorithm();
-            case "Z_VERTICAL":
+            case "z_vertical":
                 return new ZVerticalAlgorithm();
-            case "FULL_LAYER":
+            case "full_layer":
                 return new FullLayerAlgorithm();
-            case "SQUARE_LAYER":
+            case "square_layer":
                 return new SquareLayeredAlgorithm();
             default:
                 return new XVerticalAlgorithm();
