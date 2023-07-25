@@ -1,7 +1,7 @@
 package com.jagerbob.lapser.view;
 
 import com.jagerbob.lapser.controller.IClientController;
-import com.jagerbob.lapser.helpers.StringHelper;
+import com.jagerbob.lapser.helpers.MessageHelper;
 import com.jagerbob.lapser.model.IMainViewModel;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WButton;
@@ -14,7 +14,7 @@ import net.minecraft.text.Text;
 
 public class AreaEditor extends LightweightGuiDescription implements ILapserView {
 
-    private final StringHelper stringHelper;
+    private final MessageHelper messageHelper;
     private final IClientController controller;
     private final WGridPanel root;
     private final WButton setCornerABtn;
@@ -26,7 +26,7 @@ public class AreaEditor extends LightweightGuiDescription implements ILapserView
     private ClientPlayerEntity player;
 
     public AreaEditor(IClientController controller){
-        this.stringHelper = new StringHelper();
+        this.messageHelper = new MessageHelper();
         this.controller = controller;
         this.root = new WGridPanel();
         this.editorTitle = new WLabel(Text.literal("Lapser area editor"));
@@ -40,20 +40,20 @@ public class AreaEditor extends LightweightGuiDescription implements ILapserView
 
     @Override
     public void update(IMainViewModel viewModel) {
-        coordinatesA.setText(Text.literal(stringHelper.toStringCoordinates(viewModel.getCoordinatesA())));
-        coordinatesB.setText(Text.literal(stringHelper.toStringCoordinates(viewModel.getCoordinatesB())));
+        coordinatesA.setText(Text.literal(messageHelper.toStringCoordinates(viewModel.getCoordinatesA())));
+        coordinatesB.setText(Text.literal(messageHelper.toStringCoordinates(viewModel.getCoordinatesB())));
     }
 
     private void onCoordinateAClick() {
-        controller.setCoordinatesA(player.getBlockPos());
+        controller.setCoordinatesA(player.getBlockPos(), player);
     }
 
     private void onCoordinateBClick() {
-        controller.setCoordinatesB(player.getBlockPos());
+        controller.setCoordinatesB(player.getBlockPos(), player);
     }
 
     private void onSaveClick() {
-        controller.saveArea(player.getBlockPos());
+        controller.saveArea(player.getBlockPos(), player);
     }
 
     private void buildView() {

@@ -10,6 +10,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import org.slf4j.Logger;
 
@@ -40,6 +42,10 @@ public class ServerController implements IServerController {
     public void place(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
         BlockPos pos = buf.readBlockPos();
         BlockState state = BlockStateMapper.toModel(buf.readString());
-        server.execute(() -> player.getServerWorld().setBlockState(pos, state));
+        state.getSoundGroup().getPlaceSound();
+        server.execute(() -> {
+            player.getServerWorld().setBlockState(pos, state);
+            player.getServerWorld().playSound(null, pos, state.getSoundGroup().getPlaceSound(), SoundCategory.BLOCKS, 2.0f, 1.0f);
+        });
     }
 }

@@ -2,6 +2,7 @@ package com.jagerbob.lapser.controller;
 
 import com.jagerbob.lapser.algorithms.TimeLapseAlgorithm;
 import com.jagerbob.lapser.algorithms.TimeLapseAlgorithmFactory;
+import com.jagerbob.lapser.config.Messages;
 import com.jagerbob.lapser.config.Packets;
 import com.jagerbob.lapser.helpers.BlockPosMapper;
 import com.jagerbob.lapser.model.IMainViewModel;
@@ -14,8 +15,8 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Objects;
@@ -44,24 +45,27 @@ public class ClientController implements IClientController {
     }
 
     @Override
-    public void setCoordinatesA(BlockPos pos) {
+    public void setCoordinatesA(BlockPos pos, PlayerEntity player) {
         viewModel.setCoordinatesA(pos);
+        player.sendMessage(Messages.getCoordinateASetText(pos));
         update();
     }
 
     @Override
-    public void setCoordinatesB(BlockPos pos) {
+    public void setCoordinatesB(BlockPos pos, PlayerEntity player) {
         viewModel.setCoordinatesB(pos);
+        player.sendMessage(Messages.getCoordinateBSetText(pos));
         update();
     }
 
     @Override
-    public void saveArea(BlockPos origin) {
+    public void saveArea(BlockPos origin, PlayerEntity player) {
         viewModel.setOrigin(origin);
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeBlockPos(viewModel.getCoordinatesB());
         buf.writeBlockPos(viewModel.getCoordinatesA());
         ClientPlayNetworking.send(Packets.SAVE_AREA_PACKET, buf);
+        player.sendMessage(Messages.getSaveSuccessfullText());
     }
 
     @Override

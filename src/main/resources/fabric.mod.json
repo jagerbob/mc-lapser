@@ -23,9 +23,9 @@
 		]
 	},
 	"mixins": [
-		"modid.mixins.json",
+		"lapser.mixins.json",
 		{
-			"config": "modid.client.mixins.json",
+			"config": "lapser.client.mixins.json",
 			"environment": "client"
 		}
 	],

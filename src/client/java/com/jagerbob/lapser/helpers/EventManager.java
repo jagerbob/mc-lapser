@@ -21,8 +21,7 @@ public class EventManager {
     {
         PlayerBlockBreakEvents.BEFORE.register(((world, player, pos, state, blockEntity) -> {
             if(player.getMainHandStack().getItem() == Items.BLAZE_ROD) {
-                this.controller.setCoordinatesA(pos);
-                player.sendMessage(Text.literal(String.format("Set corner A to x: %d, y: %d, z: %d", pos.getX(), pos.getY(), pos.getZ())));
+                this.controller.setCoordinatesA(pos, player);
                 return false;
             }
             return true;
@@ -31,8 +30,7 @@ public class EventManager {
         UseBlockCallback.EVENT.register((player, world, hand, result) -> {
             if (player.getStackInHand(hand).getItem() == Items.BLAZE_ROD) {
                 BlockPos pos = result.getBlockPos();
-                this.controller.setCoordinatesB(player.getBlockPos());
-                player.sendMessage(Text.literal(String.format("Set corner B to x: %d, y: %d, z: %d", pos.getX(), pos.getY(), pos.getZ())));
+                this.controller.setCoordinatesB(player.getBlockPos(), player);
                 return ActionResult.CONSUME;
             }
             return ActionResult.PASS;

@@ -1,5 +1,6 @@
 package com.jagerbob.lapser.commands;
 
+import com.jagerbob.lapser.config.Messages;
 import com.jagerbob.lapser.controller.IClientController;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -33,7 +34,7 @@ public class SaveCommand implements IClientSideCommand {
     }
 
     private int execute(CommandContext<FabricClientCommandSource> context) {
-        this.controller.saveArea(Objects.requireNonNull(context.getSource().getPlayer()).getBlockPos());
+        this.controller.saveArea(Objects.requireNonNull(context.getSource().getPlayer()).getBlockPos(), context.getSource().getPlayer());
         return Command.SINGLE_SUCCESS;
     }
 }

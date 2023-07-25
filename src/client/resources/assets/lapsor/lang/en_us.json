@@ -1,0 +1,8 @@
+{
+  "general.lapser": "Lapser",
+  "com.jagerbob.lapser.play": "Play",
+  "com.jagerbob.lapser.toggleZoneEditor": "Open Zone Editor",
+  "lapser.on_save_successfull": "Successfully saved selection",
+  "lapser.set_corner_sucessfully": "Set corner %s to %d, %d, %d"
+}
+
