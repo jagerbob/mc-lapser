@@ -2,8 +2,6 @@ package com.jagerbob.lapser.model;
 
 import net.minecraft.util.math.BlockPos;
 
-import java.util.Map;
-
 public interface IMainViewModel {
     BlockPos getCoordinatesA();
 

@@ -3,8 +3,6 @@ package com.jagerbob.lapser.algorithms;
 import com.jagerbob.lapser.helpers.BlockPosMapper;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.Map;
-
 public abstract class TimeLapseAlgorithm {
 
     protected boolean excludeAir = true;

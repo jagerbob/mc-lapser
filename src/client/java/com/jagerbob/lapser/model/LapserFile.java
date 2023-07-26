@@ -2,14 +2,10 @@ package com.jagerbob.lapser.model;
 
 import com.google.gson.Gson;
 import com.jagerbob.lapser.helpers.BlockPosMapper;
-import com.jagerbob.lapser.helpers.BlockStateMapper;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class LapserFile {

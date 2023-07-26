@@ -3,8 +3,6 @@ package com.jagerbob.lapser.model;
 import com.jagerbob.lapser.helpers.BlockPosMapper;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.Map;
-
 public class MainViewModel implements IMainViewModel {
 
     private BlockPos coordinatesA = new BlockPos(BlockPos.ORIGIN);

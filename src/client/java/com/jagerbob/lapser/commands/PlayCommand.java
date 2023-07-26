@@ -11,8 +11,10 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 
 import java.util.Objects;
 
-import static com.mojang.brigadier.arguments.StringArgumentType.*;
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.*;
+import static com.mojang.brigadier.arguments.StringArgumentType.getString;
+import static com.mojang.brigadier.arguments.StringArgumentType.word;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
 public class PlayCommand implements IClientSideCommand {
 

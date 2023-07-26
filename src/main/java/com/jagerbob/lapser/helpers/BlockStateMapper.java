@@ -1,6 +1,5 @@
 package com.jagerbob.lapser.helpers;
 
-import com.mojang.serialization.DataResult;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.Registries;
