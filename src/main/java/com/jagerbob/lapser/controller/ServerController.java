@@ -17,9 +17,11 @@ import org.slf4j.Logger;
 public class ServerController implements IServerController {
 
     private final Logger logger;
+    private final BlockStateMapper blockStateMapper;
 
     public ServerController(Logger logger){
         this.logger = logger;
+        this.blockStateMapper = new BlockStateMapper();
     }
 
     @Override
@@ -31,7 +33,7 @@ public class ServerController implements IServerController {
         server.execute(() -> {
             PacketByteBuf responseBuf = PacketByteBufs.create();
             for(BlockPos pos: BlockPos.iterate(coordinatesA, coordinatesB)) {
-                responseBuf.writeString(BlockStateMapper.toString(player.getServerWorld().getBlockState(pos)));
+                responseBuf.writeString(blockStateMapper.toString(player.getServerWorld().getBlockState(pos)));
             }
             ServerPlayNetworking.send(player, Packets.RETRIEVE_AREA_PACKET, responseBuf);
         });
@@ -40,8 +42,7 @@ public class ServerController implements IServerController {
     @Override
     public void place(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
         BlockPos pos = buf.readBlockPos();
-        BlockState state = BlockStateMapper.toModel(buf.readString());
-        state.getSoundGroup().getPlaceSound();
+        BlockState state = blockStateMapper.toModel(buf.readString());
         server.execute(() -> {
             player.getServerWorld().setBlockState(pos, state);
             player.getServerWorld().playSound(null, pos, state.getSoundGroup().getPlaceSound(), SoundCategory.BLOCKS, 2.0f, 1.0f);

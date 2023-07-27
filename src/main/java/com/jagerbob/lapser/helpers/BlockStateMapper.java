@@ -7,65 +7,59 @@ import net.minecraft.state.property.Property;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.StringIdentifiable;
 
-import java.util.Iterator;
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class BlockStateMapper {
 
-    public static BlockState toModel(String string) {
-        if (!string.contains("[") && !string.contains("]")) {
-            return Registries.BLOCK.get(new Identifier(string)).getDefaultState();
-        } else {
-            Block block = Registries.BLOCK.get(new Identifier(string.substring(0, string.indexOf("["))));
-            BlockState state = block.getDefaultState();
+    private static final String STATE_REGEX = "^(.*?)(?:\\[(.*?)\\])?$";
+    private final Pattern pattern;
 
-            System.out.println(state);
+    public BlockStateMapper() {
+        this.pattern = Pattern.compile(STATE_REGEX);
+    }
 
-            String[] stateArray = string.substring(string.indexOf("[") + 1, string.length() - 1).split(",");
-            for (String stateString : stateArray) {
-                String name = stateString.split("=")[0];
-                Property<?> property = block.getStateManager().getProperty(name);
-                state = process(property, stateString.split("=")[1], state);
+    public BlockState toModel(String string) {
+        Matcher matcher = pattern.matcher(string);
+        if (!matcher.matches())
+            throw new InvalidParameterException("Unable to parse string");
+
+        Block block = Registries.BLOCK.get(new Identifier(matcher.group(1)));
+        BlockState state = block.getDefaultState();
+        String stateAsString = matcher.group(2);
+
+        if (stateAsString != null && !stateAsString.isEmpty()) {
+            for (String stringProperty : stateAsString.split(",")) {
+                Property<?> property = block.getStateManager().getProperty(stringProperty.split("=")[0]);
+                state = process(property, stringProperty.split("=")[1], state);
             }
-
-            System.out.println(state);
-
-            return state;
         }
-    }
-    private static <T extends Comparable<T>> BlockState process(Property<T> property, String value, BlockState state) {
-        return state.with(property, property.parse(value).orElseThrow(NullPointerException::new));
+
+        return state;
     }
 
-    public static String toString(BlockState state){
+    public String toString(BlockState state){
         StringBuilder builder = new StringBuilder();
         builder.append(Objects.requireNonNull(Registries.BLOCK.getId(state.getBlock())));
-        boolean flag = true;
-        Iterator<Property<?>> iterator = state.getProperties().iterator();
-        while (iterator.hasNext()) {
-            if (flag) {
-                builder.append("[");
-                flag = false;
-            }
+        List<String> propertiesAsStrings = new ArrayList<>();
 
-            Property<?> property = iterator.next();
-            builder.append(property.getName());
-            builder.append("=");
-
-            if (state.get(property) instanceof Enum<?>) {
-                // Enum might have override toString
-                builder.append(((StringIdentifiable) state.get(property)).asString());
-            } else {
-                builder.append(state.get(property).toString());
-            }
-
-            if (iterator.hasNext()) {
-                builder.append(",");
-            }
+        for(Property<?> property: state.getProperties())
+        {
+            String value = (state.get(property) instanceof Enum<?>) ? ((StringIdentifiable) state.get(property)).asString() : state.get(property).toString();
+            propertiesAsStrings.add(property.getName() + "=" + value);
         }
-        if (!flag) {
-            builder.append("]");
-        }
+
+        if(!propertiesAsStrings.isEmpty())
+            builder.append("[").append(String.join(",", propertiesAsStrings)).append("]");
+
         return builder.toString();
+    }
+
+    private <T extends Comparable<T>> BlockState process(Property<T> property, String value, BlockState state) {
+        return state.with(property, property.parse(value).orElseThrow(NullPointerException::new));
     }
 }
