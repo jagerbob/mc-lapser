@@ -14,14 +14,7 @@ public class ZVerticalAlgorithm extends TimeLapseAlgorithm {
     public void executeAlgorithm(BlockPos origin, BlockPos relativeCoordFromScanOrigin, String[][][] scan) throws InterruptedException {
         for(int z = 0; z < scan[0][0].length; z++)
             for(int y = 0; y < scan[0].length; y++)
-                for(int x = 0; x < scan.length; x++) {
-                    if(this.excludeAir && Objects.equals(scan[x][y][z], "minecraft:air"))
-                        continue;
-                    PacketByteBuf buf = PacketByteBufs.create();
-                    buf.writeBlockPos(origin.add(relativeCoordFromScanOrigin.add(new BlockPos(x, y, z))));
-                    buf.writeString(scan[x][y][z]);
-                    ClientPlayNetworking.send(Packets.PLACE, buf);
-                    Thread.sleep(15);
-                }
+                for(int x = 0; x < scan.length; x++)
+                    this.placeBlock(origin.add(relativeCoordFromScanOrigin.add(new BlockPos(x, y, z))), scan[x][y][z]);
     }
 }
