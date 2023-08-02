@@ -21,4 +21,5 @@ public interface IMainViewModel {
 
     BlockPos getRelativeCoordinatesA();
     BlockPos getRelativeCoordinatesB();
+    void setScanBlock(BlockPos readBlockPos, String readString);
 }

@@ -1,6 +1,7 @@
 package com.jagerbob.lapser.controller;
 
 import com.jagerbob.lapser.config.Packets;
+import com.jagerbob.lapser.helpers.BlockPosMapper;
 import com.jagerbob.lapser.helpers.BlockStateMapper;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -27,15 +28,18 @@ public class ServerController implements IServerController {
     @Override
     public void saveArea(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
         logger.debug(String.format("Received SAVE_AREA packet by %s", player.getIp()));
+        BlockPos origin = buf.readBlockPos();
         BlockPos coordinatesA = buf.readBlockPos();
         BlockPos coordinatesB = buf.readBlockPos();
 
         server.execute(() -> {
-            PacketByteBuf responseBuf = PacketByteBufs.create();
             for(BlockPos pos: BlockPos.iterate(coordinatesA, coordinatesB)) {
+                PacketByteBuf responseBuf = PacketByteBufs.create();
+                BlockPos newPos = BlockPosMapper.toRelativeCoordinates(coordinatesB, pos);
+                responseBuf.writeBlockPos(newPos);
                 responseBuf.writeString(blockStateMapper.toString(player.getServerWorld().getBlockState(pos)));
+                ServerPlayNetworking.send(player, Packets.RETRIEVE_AREA_PACKET, responseBuf);
             }
-            ServerPlayNetworking.send(player, Packets.RETRIEVE_AREA_PACKET, responseBuf);
         });
     }
 

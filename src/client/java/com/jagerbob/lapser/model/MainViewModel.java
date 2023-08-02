@@ -54,4 +54,9 @@ public class MainViewModel implements IMainViewModel {
     public BlockPos getRelativeCoordinatesB() {
         return BlockPosMapper.toRelativeCoordinates(this.origin, this.coordinatesB);
     }
+
+    @Override
+    public void setScanBlock(BlockPos pos, String blockStateAsString) {
+        scan[pos.getX()][pos.getY()][pos.getZ()] = blockStateAsString;
+    }
 }

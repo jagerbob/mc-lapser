@@ -60,7 +60,10 @@ public class ClientController implements IClientController {
     @Override
     public void saveArea(BlockPos origin, PlayerEntity player) {
         viewModel.setOrigin(origin);
+        BlockPos diff = BlockPosMapper.toRelativeCoordinates(viewModel.getRelativeCoordinatesA(), viewModel.getRelativeCoordinatesB());
+        viewModel.setScan(new String[diff.getX() + 1][diff.getY() + 1][diff.getZ() + 1]);
         PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeBlockPos(origin);
         buf.writeBlockPos(viewModel.getCoordinatesB());
         buf.writeBlockPos(viewModel.getCoordinatesA());
         ClientPlayNetworking.send(Packets.SAVE_AREA_PACKET, buf);
@@ -69,11 +72,7 @@ public class ClientController implements IClientController {
 
     @Override
     public void retrieveArea(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
-        BlockPos diff = BlockPosMapper.toRelativeCoordinates(viewModel.getRelativeCoordinatesA(), viewModel.getRelativeCoordinatesB());
-        String[][][] scan = new String[diff.getX() + 1][diff.getY() + 1][diff.getZ() + 1];
-        for(BlockPos pos : BlockPos.iterate(BlockPos.ORIGIN, diff))
-            scan[pos.getX()][pos.getY()][pos.getZ()] = buf.readString();
-        viewModel.setScan(scan);
+        viewModel.setScanBlock(buf.readBlockPos(), buf.readString());
     }
 
     private void update() {
